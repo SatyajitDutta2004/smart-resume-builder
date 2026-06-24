@@ -1,0 +1,2 @@
+import{j as n}from"./vendor-react-CNvHvvCs.js";function t({open:s,title:i,description:l,confirmLabel:o,cancelLabel:r,onConfirm:a,onCancel:c}){return s?n.jsx("div",{className:"modal-backdrop",children:n.jsxs("div",{className:"dialog-card",children:[n.jsx("h3",{children:i}),n.jsx("p",{children:l}),n.jsxs("div",{className:"dialog-actions",children:[n.jsx("button",{className:"secondary",type:"button",onClick:c,children:r||"Cancel"}),n.jsx("button",{type:"button",onClick:a,children:o||"Confirm"})]})]})}):null}export{t as C};
+//# sourceMappingURL=ConfirmDialog-BZRcEG_E.js.map

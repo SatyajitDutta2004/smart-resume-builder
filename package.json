@@ -1,0 +1,32 @@
+{
+  "name": "smart-resumebuilder",
+  "version": "2.0.0",
+  "description": "Full-stack AI-powered resume builder with ATS optimization and ML analysis",
+  "private": true,
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install && cd ../ai-backend && pip install -r requirements.txt",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\" \"cd ai-backend && python main.py\"",
+    "dev:web": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
+    "dev:ai": "cd ai-backend && python main.py",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "keywords": [
+    "resume",
+    "builder",
+    "ai",
+    "ml",
+    "ats",
+    "optimization",
+    "job-search",
+    "career"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: smart_resumebuilder_db
+    environment:
+      MONGO_INITDB_DATABASE: smart_resumebuilder
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - resumebuilder_network
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: smart_resumebuilder_server
+    environment:
+      PORT: 4001
+      HOST: 0.0.0.0
+      MONGODB_URI: mongodb://mongodb:27017/smart_resumebuilder
+      JWT_SECRET: your_jwt_secret_key_change_in_production
+      NODE_ENV: development
+      AI_BACKEND_URL: http://ai-backend:8000
+    ports:
+      - "4001:4001"
+    depends_on:
+      - mongodb
+      - ai-backend
+    networks:
+      - resumebuilder_network
+    volumes:
+      - ./server:/app
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: smart_resumebuilder_client
+    environment:
+      VITE_API_URL: http://localhost:4001
+      VITE_AI_API_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    networks:
+      - resumebuilder_network
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  ai-backend:
+    build:
+      context: ./ai-backend
+      dockerfile: Dockerfile
+    container_name: smart_resumebuilder_ai
+    environment:
+      AI_BACKEND_HOST: 0.0.0.0
+      AI_BACKEND_PORT: 8000
+    ports:
+      - "8000:8000"
+    networks:
+      - resumebuilder_network
+    volumes:
+      - ./ai-backend:/app
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  resumebuilder_network:
+    driver: bridge
