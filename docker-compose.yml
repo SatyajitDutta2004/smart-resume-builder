@@ -41,12 +41,15 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://server:4001/api
+        VITE_AI_API_URL: http://ai-backend:8000/api
     container_name: smart_resumebuilder_client
     environment:
-      VITE_API_URL: http://localhost:4001
-      VITE_AI_API_URL: http://localhost:8000
+      VITE_API_URL: http://server:4001/api
+      VITE_AI_API_URL: http://ai-backend:8000/api
     ports:
-      - "5173:5173"
+      - "80:80"
     depends_on:
       - server
     networks:

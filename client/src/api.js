@@ -1,6 +1,6 @@
-const API_HOST = import.meta.env.VITE_API_HOST || "http://localhost:4001/api";
+const API_HOST = import.meta.env.VITE_API_URL || "http://localhost:4001/api";
 const AI_API_HOST =
-  import.meta.env.VITE_AI_API_HOST || "http://localhost:8000/api";
+  import.meta.env.VITE_AI_API_URL || "http://localhost:8000/api";
 
 // Regular API calls (to Node.js backend)
 export async function fetchJSON(path, options = {}) {

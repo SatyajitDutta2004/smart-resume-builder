@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: smart-resume-builder-server
+    env: node
+    branch: main
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: "4001"
+      - key: HOST
+        value: "0.0.0.0"
+      - key: MONGODB_URI
+        value: "<your-mongodb-uri>"
+      - key: JWT_SECRET
+        value: "<your-secret>"
+      - key: NODE_ENV
+        value: "production"
+      - key: AI_BACKEND_URL
+        value: "https://smart-resume-builder-ai.onrender.com"
+
+  - type: web
+    name: smart-resume-builder-ai
+    env: docker
+    branch: main
+    rootDir: ai-backend
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: AI_BACKEND_HOST
+        value: "0.0.0.0"
+      - key: AI_BACKEND_PORT
+        value: "8000"
+      - key: ENV
+        value: "production"
+
+  - type: static_site
+    name: smart-resume-builder-client
+    branch: main
+    rootDir: client
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: "https://smart-resume-builder-server.onrender.com"
+      - key: VITE_AI_API_URL
+        value: "https://smart-resume-builder-ai.onrender.com"

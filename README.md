@@ -132,6 +132,21 @@ NODE_ENV=development
 AI_BACKEND_URL=http://127.0.0.1:8000
 ```
 
+**AI Backend** - Create `ai-backend/.env`:
+
+```
+AI_BACKEND_HOST=0.0.0.0
+AI_BACKEND_PORT=8000
+ENV=development
+```
+
+**Client** - Create `client/.env`:
+
+```
+VITE_API_URL=http://127.0.0.1:4001/api
+VITE_AI_API_URL=http://127.0.0.1:8000/api
+```
+
 ### 3. Start Services
 
 **Terminal 1 - MongoDB**
@@ -178,6 +193,37 @@ docker-compose up --build
 # Stop services
 docker-compose down
 ```
+
+Open the frontend at:
+
+- http://localhost
+
+---
+
+## ☁️ Render Deployment
+
+This repository includes a `render.yaml` manifest for Render.com.
+It defines three services:
+
+- `smart-resume-builder-server` — Node backend
+- `smart-resume-builder-ai` — Python AI backend
+- `smart-resume-builder-client` — static React frontend
+
+Deploy steps:
+
+1. Push this repository to GitHub.
+2. Connect the repo in Render.
+3. Render will use `render.yaml` to create the three services.
+4. Configure the server service secrets:
+   - `MONGODB_URI`
+   - `JWT_SECRET`
+5. Verify the client service build completes and the AI backend starts.
+
+If the server service needs a frontend origin, add:
+
+- `FRONTEND_URL=https://<your-client-service-name>.onrender.com`
+
+The client and AI service environment variables are already defined in `render.yaml`.
 
 ---
 
@@ -447,5 +493,5 @@ powershell -ExecutionPolicy Bypass -File scripts/smoke_test.ps1
 
 - `OPENAI_API_KEY` is optional. Without it, the backend returns polished fallback content so the app still works.
 - Keep `JWT_SECRET` private and strong in production.
-- The frontend calls `VITE_API_HOST` when provided, otherwise it defaults to `http://localhost:4000/api`.
-- The frontend calls `VITE_API_HOST` when provided, otherwise it defaults to `/api`. In local Vite development, `/api` is proxied to `http://127.0.0.1:4001`.
+- The frontend uses `VITE_API_URL` and `VITE_AI_API_URL`.
+- In local Vite development, `client/.env` should point to `http://127.0.0.1:4001/api` and `http://127.0.0.1:8000/api`.
